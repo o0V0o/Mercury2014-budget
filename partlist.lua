@@ -37,6 +37,28 @@ function Part:__tostring()
 	table.insert(t, self.link)
 	return table.concat(t)
 end
+function Part.tableHeader()
+	return "Name|Subtotal|Unit Price|Part No.|Link|Description\n" .. "---|---|---|---|---|---"
+end
+function Part:tableRow()
+	local t = {}
+	table.insert(t,self.name)
+	table.insert(t," | ")
+	table.insert(t,self.subtotal)
+	table.insert(t," | ")
+	table.insert(t, " (")
+	table.insert(t, self.amount)
+	table.insert(t, "x")
+	table.insert(t, self.price)
+	table.insert(t, ")")
+	table.insert(t," | ")
+	table.insert(t,self.partNo)
+	table.insert(t," | ")
+	table.insert(t,self.link)
+	table.insert(t," | ")
+	table.insert(t,self.description)
+	return table.concat(t)
+end
 
 
 -- Electronics -----------------------------
@@ -67,19 +89,21 @@ Part("1/8\" Diameter Axel (1\" length)", 1, nil, nil, "Round 1/8\" Diameter Axel
 Part("1/4\" Diameter D Shaft (2\" length)", 1, nil, nil, "D shaped shafting", 1)
 Part("Bearing", 1, nil, "http://www.servocity.com/html/flanged_ball_bearings.html", "Flanged ball bearing", 5)
 Part("Shaft Collar", 0.50, nil, "http://www.servocity.com/html/steel_set_screw_collars.html", "Set screw shaft collar", 10)
-Part("Wheel", 6, nil, "http://www.robotmarketplace.com/products/lite_flite_wheels.html", "2\" diameter Lite Flite foam wheels",1)
-Part("Wheel", 6, nil, "http://www.robotmarketplace.com/products/lite_flite_wheels.html", "1.75\" diameter Lectra Flite foam wheels",1)
+Part("Wheel", 6, nil, "http://www.robotmarketplace.com/products/lite_flite_wheels.html", "2\" diameter Lite Flite foam wheels",0)
+Part("Wheel", 6, nil, "http://www.robotmarketplace.com/products/lite_flite_wheels.html", "1.75\" diameter Lectra Flite foam wheels",0)
 Part("Wheel", 11, nil, "http://www.pololu.com/product/1687", "2.56\" diameter spiked rubber wheels",1)
-Part("Wheel", 11, nil, "http://www.pololu.com/product/1687", "2.56\" diameter spiked rubber wheels",1)
+Part("Wheel", 4, nil, "http://www.servocity.com/html/precision_disk_wheels.html#.VEm1NH_LcQU", "2\" diameter thin plastic wheels with rubber rims", 2)
 Part("Wheel Hub", 5, nil, "http://www.servocity.com/html/0_770__set_screw_hubs.html", "A wheel hub with screw holes and a set screw")
 
 total = 0
+print( Part.tableHeader() )
 for name, part in pairs(parts) do
 	if part.amount > 0 then
-		print(part)
+		print(part:tableRow())
 	end
 	total = total + part.subtotal
 end
+print("")
 print ( "Total: ", total, "remaining:", 300-total)
 
 return parts
